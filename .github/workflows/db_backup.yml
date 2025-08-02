@@ -1,0 +1,37 @@
+name: Daily DB Snapshot
+
+on:
+  schedule:
+    # Runs every day at 03:00 UTC
+    - cron: '0 3 * * *'
+  # Allow manual trigger as well
+  workflow_dispatch:
+
+jobs:
+  dump-and-store:
+    runs-on: ubuntu-latest
+    env:
+      # Supabase Postgres URL in the form:
+      # postgres://USER:PASSWORD@HOST:PORT/DATABASE
+      DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
+    steps:
+      - name: Checkout (minimal)
+        uses: actions/checkout@v3
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Dump database
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL is not set. Please add SUPABASE_DB_URL to repo secrets." && exit 1
+          fi
+          timestamp=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
+          pg_dump "$DATABASE_URL" -F c -f "db_snapshot_${timestamp}.dump"
+
+      - name: Upload snapshot as GitHub artifact (90-day retention)
+        uses: actions/upload-artifact@v3
+        with:
+          name: db_snapshot
+          path: db_snapshot_*.dump
+          retention-days: 90
