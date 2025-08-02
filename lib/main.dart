@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import './services/offline_first_liturgical_service.dart';
+import 'services/feature_flags_service.dart';
 import 'core/app_export.dart';
 
 void main() async {
@@ -12,6 +13,9 @@ void main() async {
     BoxConstraints(maxWidth: 360, maxHeight: 640),
     Orientation.portrait,
   );
+
+  // Initialize feature flags
+  await FeatureFlagsService().initialize();
 
   // Initialize offline-first architecture services
   try {

@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_report_service.dart';
 import '../../services/validation_cross_reference_service.dart';
+import '../../services/feature_flags_service.dart';
 import './widgets/admin_dashboard_widget.dart';
 import './widgets/flagged_content_list_widget.dart';
 import './widgets/quality_scores_widget.dart';
@@ -49,8 +50,11 @@ class _AdminReviewScreenState extends State<AdminReviewScreen>
 
       // Check if user is admin (this would normally be done via a service call)
       // For now, we'll assume admin check is done by the service itself
+      final flags = FeatureFlagsService();
+      final bool adminFeatureEnabled = flags.isEnabled('admin_review', defaultValue: false);
+
       setState(() {
-        _isAdmin = true;
+        _isAdmin = adminFeatureEnabled;
         _isLoading = false;
       });
     } catch (e) {
