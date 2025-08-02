@@ -16,6 +16,7 @@ class AppRoutes {
   static const String liturgicalCalendar = '/liturgical-calendar';
   static const String readingDetail = '/reading-detail';
   static const String adminReview = '/admin-review';
+  static const String faq = '/faq';
 
   static Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashScreen(),
@@ -24,6 +25,7 @@ class AppRoutes {
     readingDetail: (context) => const ReadingDetail(),
     todaySReadings: (context) => const TodayReadingsScreen(),
     adminReview: (context) => const AdminReviewScreen(),
+    faq: (context) => const FaqScreen(),
     // TODO: Add your other routes here
   };
 }
