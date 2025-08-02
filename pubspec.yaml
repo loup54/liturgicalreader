@@ -1,0 +1,61 @@
+name: liturgical_reader
+description: "A Catholic liturgical reader app with daily readings, calendar integration, and offline-first functionality"
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.2.0
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Core packages
+  cupertino_icons: ^1.0.6
+
+  # Image handling and caching
+  cached_network_image: ^3.3.1
+  flutter_svg: ^2.0.9
+
+  # Responsive design
+  sizer: ^2.0.15
+
+  # Storage and persistence
+  shared_preferences: ^2.2.2
+
+  # Networking
+  dio: ^5.7.0
+  connectivity_plus: ^5.0.2
+
+  # Data visualization
+  fl_chart: ^0.65.0
+
+  # UI enhancements
+  fluttertoast: ^8.2.4
+
+  # Typography
+  google_fonts: ^6.1.0
+
+  # Supabase integration
+  supabase_flutter: ^2.5.6
+
+  web: any
+  intl: any
+  cron: any
+  background_fetch: any
+  crypto: any
+  html: any
+  xml: any
+  internet_connection_checker: any
+  sqflite: any
+  path: any
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
