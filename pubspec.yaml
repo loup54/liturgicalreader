@@ -33,6 +33,9 @@ dependencies:
   # Data visualization
   fl_chart: ^0.65.0
 
+  # Monitoring
+  sentry_flutter: ^7.13.0
+
   # UI enhancements
   fluttertoast: ^8.2.4
 

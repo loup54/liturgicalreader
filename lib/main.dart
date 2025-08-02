@@ -4,9 +4,19 @@ import 'package:sizer/sizer.dart';
 import './services/offline_first_liturgical_service.dart';
 import 'services/feature_flags_service.dart';
 import 'core/app_export.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Sentry for crash/error monitoring
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          const String.fromEnvironment('SENTRY_DSN', defaultValue: '');
+      options.tracesSampleRate = 1.0; // Adjust in production
+    },
+  );
 
   // Initialize Sizer
   SizerUtil.setScreenSize(
