@@ -25,7 +25,11 @@ void main() async {
   );
 
   // Initialize feature flags
-  await FeatureFlagsService().initialize();
+  final featureFlags = FeatureFlagsService();
+  await featureFlags.initialize();
+
+  // Initialize performance monitoring (guarded by flag)
+  await PerformanceService().initialize();
 
   // Initialize offline-first architecture services
   try {

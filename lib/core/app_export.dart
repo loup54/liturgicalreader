@@ -4,3 +4,4 @@ export '../widgets/custom_icon_widget.dart';
 export '../widgets/custom_image_widget.dart';
 export '../theme/app_theme.dart';
 export '../services/feature_flags_service.dart';
+export '../services/performance_service.dart';
