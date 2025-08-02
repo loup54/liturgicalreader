@@ -1,0 +1,57 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
+      - run: flutter pub get
+      - name: Build Android App Bundle
+        run: flutter build appbundle --release --dart-define-from-file=env.json
+      - name: Upload AAB as workflow artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+      - name: Attach AAB to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/app/outputs/bundle/release/app-release.aab
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
+      - run: flutter pub get
+      - name: Build iOS IPA
+        run: |
+          flutter build ios --release --no-codesign --dart-define-from-file=env.json
+          mkdir -p build/ios/ipa_output
+          # Archive the .app into .ipa without signing (for CI storage)
+          /usr/bin/xcrun -sdk iphoneos PackageApplication -v build/ios/iphoneos/Runner.app -o $PWD/build/ios/ipa_output/Runner.ipa
+      - name: Upload IPA as workflow artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios-ipa
+          path: build/ios/ipa_output/Runner.ipa
+      - name: Attach IPA to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/ios/ipa_output/Runner.ipa
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
